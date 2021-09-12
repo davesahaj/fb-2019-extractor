@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 {
     FB fb;
 
-    fb.initialize("FILE");
+    // fb.initialize("FILE");
 
     return 0;
 }
