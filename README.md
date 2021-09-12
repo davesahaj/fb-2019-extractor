@@ -2,6 +2,6 @@
 
 simple C++ program I made in an hour to find and extract information from fb leaked database.
 
-###usage
+### usage
 compile and provide db file as argument:
 ./extract Italy.txt
