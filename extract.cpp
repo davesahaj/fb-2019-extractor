@@ -105,7 +105,6 @@ Person FB::makePerson(std::string line)
 
     return person;
 }
-
 bool FB::compareDetails(std::string a, std::string b)
 {
 
@@ -118,36 +117,7 @@ bool FB::compareDetails(std::string a, std::string b)
 
     return 0;
 }
-std::vector<Person> FB::search()
-{
-    std::vector<Person> tmp{};
-
-    for (auto &person : people)
-    {
-        bool flag{};
-        if (phnumber != "" && compareDetails(person.getNumber(), phnumber))
-            flag = 0;
-        if (fname != "" && compareDetails(person.getFname(), fname))
-            flag = 0;
-        if (lname != "" && compareDetails(person.getLname(), lname))
-            flag = 0;
-        if (gender != "" && !(person.getGender() == gender))
-            flag = 0;
-        if (city != "" && compareDetails(person.getCity(), city))
-            flag = 0;
-        if (rel_status != "" && !(person.getRelationship() == rel_status))
-            flag = 0;
-        if (occupation != "" && compareDetails(person.getWork(), occupation))
-            flag = 0;
-
-        if (flag)
-            tmp.push_back(person);
-    }
-
-    return tmp;
-}
-
-void displayPeople(std::vector<Person> people)
+void FB::displayPeople(std::vector<Person> people)
 {
     if (!people.size())
     {
@@ -182,8 +152,89 @@ void displayPeople(std::vector<Person> people)
                   << std::endl;
     }
 }
+std::vector<Person> FB::search()
+{
+    std::string inp{};
 
-void FB::initialize(std::string path)
+    std::cout << "Please enter your query:\n";
+    std::cout << "Enter '-' without '' to remove the search criteria.\n\n";
+
+    std::cout << "Phone Number: ";
+    std::cin >> inp;
+
+    if (inp != "-")
+        this->phnumber = inp;
+
+    std::cout << "First Name: ";
+    std::cin >> inp;
+
+    if (inp != "-")
+        this->fname = inp;
+
+    std::cout << "Last Name: ";
+    std::cin >> inp;
+
+    if (inp != "-")
+        this->lname = inp;
+
+    std::cout << "Gender: ";
+    std::cin >> inp;
+
+    if (inp != "-")
+        this->gender = inp;
+
+    std::cout << "City: ";
+    std::cin >> inp;
+
+    if (inp != "-")
+        this->city = inp;
+
+    std::cout << "Relationship Status: ";
+    std::cin >> inp;
+
+    if (inp != "-")
+        this->rel_status = inp;
+
+    std::cout << "Occupation: ";
+    std::cin >> inp;
+
+    if (inp != "-")
+        this->occupation = inp;
+
+    transform(fname.begin(), fname.end(), fname.begin(), ::tolower);
+    transform(lname.begin(), lname.end(), lname.begin(), ::tolower);
+    transform(gender.begin(), gender.end(), gender.begin(), ::tolower);
+    transform(city.begin(), city.end(), city.begin(), ::tolower);
+    transform(rel_status.begin(), rel_status.end(), rel_status.begin(), ::tolower);
+    transform(occupation.begin(), occupation.end(), occupation.begin(), ::tolower);
+
+    std::vector<Person> tmp{};
+
+    for (auto &person : people)
+    {
+        bool flag{1};
+        if (phnumber != "" && compareDetails(person.getNumber(), phnumber))
+            flag = 0;
+        if (fname != "" && compareDetails(person.getFname(), fname))
+            flag = 0;
+        if (lname != "" && compareDetails(person.getLname(), lname))
+            flag = 0;
+        if (gender != "" && !(person.getGender() == gender))
+            flag = 0;
+        if (city != "" && compareDetails(person.getCity(), city))
+            flag = 0;
+        if (rel_status != "" && !(person.getRelationship() == rel_status))
+            flag = 0;
+        if (occupation != "" && compareDetails(person.getWork(), occupation))
+            flag = 0;
+
+        if (flag)
+            tmp.push_back(person);
+    }
+
+    return tmp;
+}
+void FB::run(std::string path)
 {
     std::ifstream infile(path);
 
@@ -202,14 +253,15 @@ void FB::initialize(std::string path)
     {
         std::string ch;
 
-        system("clear");
         std::cout << "Would you like to search the records (Y/N): ";
         std::cin >> ch;
+        system("clear");
 
         if (ch == "n" || ch == "N")
             break;
 
-        search();
+        auto p = search();
+        displayPeople(p);
 
     } while (1);
 }

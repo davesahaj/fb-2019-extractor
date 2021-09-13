@@ -54,13 +54,17 @@ private:
     std::string rel_status{""};
     std::string occupation{""};
 
+    void setGender(std::string data);
+
     bool compareDetails(std::string a, std::string b);
     Person makePerson(std::string line);
-    std::vector<Person> search();
     void displayPeople(std::vector<Person> people);
+    std::vector<Person> search();
+
+    void toCSV(std::vector<Person> data);
 
 public:
-    void initialize(std::string path);
+    void run(std::string path);
 };
 
 #endif
